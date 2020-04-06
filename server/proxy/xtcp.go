@@ -40,10 +40,11 @@ func (pxy *XtcpProxy) Run() (remoteAddr string, err error) {
 	}
 	sidCh := pxy.rc.NatHoleController.ListenClient(pxy.GetName(), pxy.cfg.Sk)
 	go func() {
+	l:
 		for {
 			select {
 			case <-pxy.closeCh:
-				break
+				break l
 			case sidRequest := <-sidCh:
 				sr := sidRequest
 				workConn, errRet := pxy.GetWorkConnFromPool(nil, nil)
